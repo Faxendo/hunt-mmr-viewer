@@ -53,7 +53,7 @@ func main() {
 	var cfg Config = loadConfig()
 
 	prompt := promptui.Prompt{
-		Label:   "Dossier contenant Hunt : Showdown",
+		Label:   "Folder containing Hunt:Showdown files",
 		Default: cfg.DefaultFolder,
 	}
 
