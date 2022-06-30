@@ -208,4 +208,7 @@ func display(players []Player) {
 	})
 
 	t.Render()
+
+	fmt.Println("Press any key to exit")
+	fmt.Scanln()
 }
