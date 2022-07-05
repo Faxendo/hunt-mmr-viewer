@@ -52,10 +52,10 @@ func SendToElastic(dataPlayer ElasticData) {
 
 	cfg := elasticsearch.Config{
 		Addresses: []string{
-			"https://meh.mrh.fr/e",
+			"https://dzqd.qzdqz.fr/e",
 		},
-		Username: "meh",
-		Password: "meh",
+		Username: "qzdqzd",
+		Password: "qzd",
 	}
 
 	es, err := elasticsearch.NewClient(cfg)
@@ -88,8 +88,6 @@ func SendToElastic(dataPlayer ElasticData) {
 		var r map[string]interface{}
 		if err := json.NewDecoder(res.Body).Decode(&r); err != nil {
 			log.Printf("Error parsing the response body: %s", err)
-		} else {
-			log.Print("Stats successfully sent to tracking server.")
 		}
 	}
 }

@@ -74,7 +74,14 @@ func main() {
 
 	display(players)
 
-	parsePlayerAndSendToElastic(players, CalculHashMatch(players))
+	lastMatchHash := CalculHashMatch(players)
+
+	if cfg.SendToElastic == true && cfg.LastHashMatch != lastMatchHash {
+		parsePlayerAndSendToElastic(players, lastMatchHash)
+		cfg.LastHashMatch = lastMatchHash
+		saveConfig(cfg)
+		fmt.Print("Stats successfully sent to tracking server.")
+	}
 
 	//End of program.
 	fmt.Println("Press enter to exit")

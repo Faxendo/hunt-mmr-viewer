@@ -10,6 +10,7 @@ import (
 type Config struct {
 	DefaultFolder string `yaml:"default_folder"`
 	SendToElastic bool   `yaml:"send_to_elastic"`
+	LastHashMatch int    `yaml:"last_hash_match"`
 }
 
 func loadConfig() Config {
