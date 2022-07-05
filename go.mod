@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/elastic/go-elasticsearch/v8 v8.3.0
+	github.com/google/uuid v1.1.1
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
 	github.com/jedib0t/go-pretty/v6 v6.3.3
 	github.com/manifoldco/promptui v0.9.0

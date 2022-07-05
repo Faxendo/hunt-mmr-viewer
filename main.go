@@ -77,7 +77,7 @@ func main() {
 	lastMatchHash := CalculHashMatch(players)
 
 	if cfg.SendToElastic == true && cfg.LastHashMatch != lastMatchHash {
-		parsePlayerAndSendToElastic(players, lastMatchHash)
+		parsePlayerAndSendToElastic(players, lastMatchHash, cfg.UUID)
 		cfg.LastHashMatch = lastMatchHash
 		saveConfig(cfg)
 		fmt.Println("Stats successfully sent to tracking server.")

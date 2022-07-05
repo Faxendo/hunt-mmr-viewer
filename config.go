@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 
+	"github.com/google/uuid"
 	"gopkg.in/yaml.v2"
 )
 
@@ -14,6 +15,7 @@ type Config struct {
 	ElacticUser     string `yaml:"elactic_user"`
 	ElasticPassword string `yaml:"elactic_password"`
 	LastHashMatch   int    `yaml:"last_hash_match"`
+	UUID            string `yaml:"uuid"`
 }
 
 func loadConfig() Config {
@@ -26,6 +28,7 @@ func loadConfig() Config {
 		cfg.ElasticUrl = "https://elasticserver.local:9200"
 		cfg.ElacticUser = "user"
 		cfg.ElasticPassword = "password"
+		cfg.UUID = uuid.New().String()
 		saveConfig(cfg)
 		return cfg
 	}

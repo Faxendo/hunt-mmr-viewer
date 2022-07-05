@@ -21,10 +21,11 @@ type ElasticData struct {
 	KilledByMe bool `json:"KilledByMe"`
 	KilledMe   bool `json:"KilledMe"`
 
-	MatchHash int `json:"MatchHash"`
+	MatchHash int    `json:"MatchHash"`
+	UUID      string `json:"uuid"`
 }
 
-func parsePlayerAndSendToElastic(players []Player, hashMatch int) {
+func parsePlayerAndSendToElastic(players []Player, hashMatch int, uuid string) {
 	for _, p := range players {
 		var elasticData ElasticData
 
@@ -43,6 +44,7 @@ func parsePlayerAndSendToElastic(players []Player, hashMatch int) {
 			elasticData.KilledMe = true
 		}
 		elasticData.MatchHash = hashMatch
+		elasticData.UUID = uuid
 
 		SendToElastic(elasticData)
 	}
