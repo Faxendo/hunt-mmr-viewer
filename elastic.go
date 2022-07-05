@@ -50,12 +50,14 @@ func parsePlayerAndSendToElastic(players []Player, hashMatch int) {
 
 func SendToElastic(dataPlayer ElasticData) {
 
+	var cfgFile Config = loadConfig()
+
 	cfg := elasticsearch.Config{
 		Addresses: []string{
-			"https://dzqd.qzdqz.fr/e",
+			cfgFile.ElasticUrl,
 		},
-		Username: "qzdqzd",
-		Password: "qzd",
+		Username: cfgFile.ElacticUser,
+		Password: cfgFile.ElasticPassword,
 	}
 
 	es, err := elasticsearch.NewClient(cfg)
