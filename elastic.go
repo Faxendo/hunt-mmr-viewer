@@ -7,52 +7,55 @@ import (
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"log"
-	"time"
 )
 
 type ElasticData struct {
 	TeamID   string `json:"TeamID"`
 	PlayerID string `json:"PlayerID"`
 	ProfilID string `json:"ProfilID"`
+	Name     string `json:"Name"`
 
 	MMR string `json:"MMR"`
 
-	HadBounty  string `json:"HadBounty"`
-	KilledByMe string `json:"KilledByMe"`
-	KilledMe   string `json:"KilledMe"`
+	HadBounty  bool `json:"HadBounty"`
+	KilledByMe bool `json:"KilledByMe"`
+	KilledMe   bool `json:"KilledMe"`
 
 	MatchHash int `json:"MatchHash"`
-
-	Timestamp int `json:"timestamp"`
 }
 
 func parsePlayerAndSendToElastic(players []Player, hashMatch int) {
-	var elasticData ElasticData
-
 	for _, p := range players {
+		var elasticData ElasticData
 
 		elasticData.TeamID = p.TeamID
 		elasticData.PlayerID = p.PlayerID
 		elasticData.ProfilID = p.ProfilID
+		elasticData.Name = p.Name
 		elasticData.MMR = p.MMR
-		elasticData.HadBounty = p.HadBounty
-		elasticData.KilledByMe = p.KilledByMe
-		elasticData.KilledMe = p.KilledMe
+		if p.HadBounty == "X" {
+			elasticData.HadBounty = true
+		}
+		if p.KilledByMe == "X" {
+			elasticData.KilledByMe = true
+		}
+		if p.KilledMe == "X" {
+			elasticData.KilledMe = true
+		}
 		elasticData.MatchHash = hashMatch
-		elasticData.Timestamp = int(time.Now().Unix())
-	}
 
-	SendToElastic(elasticData)
+		SendToElastic(elasticData)
+	}
 }
 
 func SendToElastic(dataPlayer ElasticData) {
 
 	cfg := elasticsearch.Config{
 		Addresses: []string{
-			"https://kibana.sevenn.fr/e",
+			"https://meh.mrh.fr/e",
 		},
-		Username: "hunt",
-		Password: "huntmmr",
+		Username: "meh",
+		Password: "meh",
 	}
 
 	es, err := elasticsearch.NewClient(cfg)
@@ -66,9 +69,10 @@ func SendToElastic(dataPlayer ElasticData) {
 	}
 
 	req := esapi.IndexRequest{
-		Index:   "hunt_mmr",
-		Body:    bytes.NewReader(data),
-		Refresh: "true",
+		Index:    "hunt_mmr",
+		Body:     bytes.NewReader(data),
+		Refresh:  "true",
+		Pipeline: "timestamp",
 	}
 
 	res, err := req.Do(context.Background(), es)
