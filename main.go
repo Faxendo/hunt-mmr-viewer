@@ -65,7 +65,8 @@ func main() {
 	}
 
 	if result != cfg.DefaultFolder {
-		saveConfig(result)
+		cfg.DefaultFolder = result
+		saveConfig(cfg)
 	}
 
 	parse(result)
@@ -209,6 +210,6 @@ func display(players []Player) {
 
 	t.Render()
 
-	fmt.Println("Press any key to exit")
+	fmt.Println("Press enter to exit")
 	fmt.Scanln()
 }

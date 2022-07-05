@@ -9,6 +9,7 @@ import (
 
 type Config struct {
 	DefaultFolder string `yaml:"default_folder"`
+	SendToElastic bool   `yaml:"send_to_elastic"`
 }
 
 func loadConfig() Config {
@@ -16,7 +17,8 @@ func loadConfig() Config {
 
 	if _, err := os.Stat("./config.yml"); errors.Is(err, os.ErrNotExist) {
 		cfg.DefaultFolder = "C:/Program Files (x86)/Steam/steamapps/common/Hunt Showdown/user/profiles/default"
-		saveConfig(cfg.DefaultFolder)
+		cfg.SendToElastic = false
+		saveConfig(cfg)
 		return cfg
 	}
 
@@ -31,15 +33,12 @@ func loadConfig() Config {
 	return cfg
 }
 
-func saveConfig(folder string) {
-	var cfg Config
-	cfg.DefaultFolder = folder
-
+func saveConfig(config Config) {
 	f, err := os.Create("config.yml")
 	check(err)
 	defer f.Close()
 
 	encoder := yaml.NewEncoder(f)
-	err = encoder.Encode(cfg)
+	err = encoder.Encode(config)
 	check(err)
 }
