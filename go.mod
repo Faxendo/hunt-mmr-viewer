@@ -3,6 +3,7 @@ module github.com/Faxendo/hunt-mmr-viewer
 go 1.18
 
 require (
+	github.com/elastic/go-elasticsearch/v8 v8.3.0
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
 	github.com/jedib0t/go-pretty/v6 v6.3.3
 	github.com/manifoldco/promptui v0.9.0
@@ -12,6 +13,7 @@ require (
 require (
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
+	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c // indirect
 	github.com/go-openapi/errors v0.19.8 // indirect
 	github.com/go-openapi/strfmt v0.21.2 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
