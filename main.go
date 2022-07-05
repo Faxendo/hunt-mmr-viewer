@@ -29,6 +29,7 @@ type Player struct {
 	ID       string
 	TeamID   string
 	PlayerID string
+	ProfilID string
 
 	Name string
 	MMR  string
@@ -65,13 +66,29 @@ func main() {
 	}
 
 	if result != cfg.DefaultFolder {
-		saveConfig(result)
+		cfg.DefaultFolder = result
+		saveConfig(cfg)
 	}
 
-	parse(result)
+	players := parse(result)
+
+	display(players)
+
+	lastMatchHash := CalculHashMatch(players)
+
+	if cfg.SendToElastic == true && cfg.LastHashMatch != lastMatchHash {
+		parsePlayerAndSendToElastic(players, lastMatchHash, cfg.UUID)
+		cfg.LastHashMatch = lastMatchHash
+		saveConfig(cfg)
+		fmt.Println("Stats successfully sent to tracking server.")
+	}
+
+	//End of program.
+	fmt.Println("Press enter to exit")
+	fmt.Scanln()
 }
 
-func parse(baseFolder string) {
+func parse(baseFolder string) []Player {
 	xmlFile, err := os.Open(filepath.Join(baseFolder, defaultFileDir))
 	check(err)
 
@@ -148,6 +165,8 @@ func parse(baseFolder string) {
 				} else {
 					player.KilledMe = ""
 				}
+			case "profileid":
+				player.ProfilID = attr.Value
 			}
 
 			playerMap[completeId] = player
@@ -155,13 +174,27 @@ func parse(baseFolder string) {
 	}
 
 	for _, p := range playerMap {
-		// fmt.Printf("%s | [MMR : %s]\n", p.Name, p.MMR)
 		players = append(players, p)
 	}
 
 	defer xmlFile.Close()
 
-	display(players)
+	return players
+}
+
+func CalculHashMatch(players []Player) int {
+	var sumProfilId int
+
+	for _, p := range players {
+
+		i, err := strconv.Atoi(p.ProfilID)
+		if err != nil {
+			panic(err)
+		}
+
+		sumProfilId += i
+	}
+	return sumProfilId
 }
 
 func display(players []Player) {
@@ -208,7 +241,4 @@ func display(players []Player) {
 	})
 
 	t.Render()
-
-	fmt.Println("Press any key to exit")
-	fmt.Scanln()
 }
