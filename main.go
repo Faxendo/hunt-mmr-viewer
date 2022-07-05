@@ -80,7 +80,7 @@ func main() {
 		parsePlayerAndSendToElastic(players, lastMatchHash)
 		cfg.LastHashMatch = lastMatchHash
 		saveConfig(cfg)
-		fmt.Print("Stats successfully sent to tracking server.")
+		fmt.Println("Stats successfully sent to tracking server.")
 	}
 
 	//End of program.
